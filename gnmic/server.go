@@ -128,6 +128,10 @@ func (o *Gnmic) createPolicy(c *gin.Context) {
 			c.IndentedJSON(http.StatusForbidden, ReturnValue{"targets field is required"})
 			return
 		}
+		if len(data.Config.Outputs) == 0 {
+			c.IndentedJSON(http.StatusForbidden, ReturnValue{"outputs field is required"})
+			return
+		}
 	}
 
 	r := runner.New(o.logger, policy, o.policiesDir)

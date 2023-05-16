@@ -25,8 +25,7 @@ type Policy struct {
 }
 
 type Config struct {
-	Debug         bool   `mapstructure:"orb_gnmic_debug"`
-	SelfTelemetry bool   `mapstructure:"orb_gnmic_self_telemetry"`
-	ServerHost    string `mapstructure:"orb_gnmic_server_host"`
-	ServerPort    uint64 `mapstructure:"orb_gnmic_server_port"`
+	Debug      bool   `mapstructure:"orb_gnmic_debug"`
+	ServerHost string `mapstructure:"orb_gnmic_server_host"`
+	ServerPort uint64 `mapstructure:"orb_gnmic_server_port"`
 }

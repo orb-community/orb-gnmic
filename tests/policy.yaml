@@ -1,0 +1,108 @@
+policia_nome:
+  config:
+    username: admin
+    password: admin
+    port: 57400
+    timeout: 10s
+    skip-verify: true
+    encoding: json_ietf
+    targets:
+      leaf1:57400: null
+      leaf2:57400: null
+      leaf3:57400: null
+      spine1:57400: null
+      spine2:57400: null
+    subscriptions:
+      srl_apps:
+        mode: stream
+        paths:
+          - /system/app-management/application[name=*]
+        sample-interval: 5s
+        stream-mode: sample
+      srl_bgp_stats:
+        mode: stream
+        paths:
+          - /network-instance[name=*]/protocols/bgp/statistics
+        sample-interval: 5s
+        stream-mode: sample
+      srl_cpu:
+        mode: stream
+        paths:
+          - /platform/control[slot=*]/cpu[index=all]/total
+        sample-interval: 5s
+        stream-mode: sample
+      srl_if_oper_state:
+        mode: stream
+        paths:
+          - /interface[name=ethernet-1/*]/oper-state
+        sample-interval: 5s
+        stream-mode: sample
+      srl_if_stats:
+        mode: stream
+        paths:
+          - /interface[name=ethernet-1/*]/statistics
+        sample-interval: 5s
+        stream-mode: sample
+      srl_if_traffic_rate:
+        mode: stream
+        paths:
+          - /interface[name=ethernet-1/*]/traffic-rate
+        sample-interval: 5s
+        stream-mode: sample
+      srl_ipv4_routes:
+        mode: stream
+        paths:
+          - /network-instance[name=*]/route-table/ipv4-unicast/statistics/
+        sample-interval: 5s
+        stream-mode: sample
+      srl_ipv6_routes:
+        mode: stream
+        paths:
+          - /network-instance[name=*]/route-table/ipv6-unicast/statistics/
+        sample-interval: 5s
+        stream-mode: sample
+      srl_mem:
+        mode: stream
+        paths:
+          - /platform/control[slot=*]/memory
+        sample-interval: 5s
+        stream-mode: sample
+      srl_net_instance:
+        mode: stream
+        paths:
+          - /network-instance[name=*]/oper-state
+        sample-interval: 5s
+        stream-mode: sample
+    outputs:
+      prom:
+        append-subscription-name: true
+        debug: false
+        event-processors:
+          - trim-prefixes
+          - up-down-map
+        export-timestamps: true
+        listen: :9273
+        metric-prefix: gnmic
+        path: /metrics
+        type: prometheus
+    processors:
+      trim-prefixes:
+        event-strings:
+          transforms:
+            - path-base:
+                apply-on: name
+          value-names:
+            - .*
+      up-down-map:
+        event-strings:
+          transforms:
+            - replace:
+                apply-on: value
+                new: "1"
+                old: up
+            - replace:
+                apply-on: value
+                new: "0"
+                old: down
+          value-names:
+            - oper-state

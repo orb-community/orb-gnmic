@@ -32,7 +32,7 @@ jobs:
       - name: Get VERSION
         shell: bash
         run: |
-          version=$(runner/gnmic -v | cut -d ' ' -f 3)
+          version=$(runner/gnmic version | cut -d ' ' -f 3 | cut -d ':' -f 1)
           echo $version > VERSION.txt
 
       - name: Store VERSION

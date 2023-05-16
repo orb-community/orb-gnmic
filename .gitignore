@@ -6,4 +6,4 @@
 *.test
 *.out
 .vscode/
-runner/otelcol-contrib
+runner/gnmic

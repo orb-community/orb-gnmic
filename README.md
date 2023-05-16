@@ -27,7 +27,6 @@ Usage:
 Flags:
   -d, --debug                Enable verbose (debug level) output
   -h, --help                 help for run
-  -s, --self_telemetry       Enable self telemetry for collectors. It is disabled by default to avoid port conflict
   -a, --server_host string   Define REST Host (default "localhost")
   -p, --server_port uint     Define REST Port (default 10337)
 ```
